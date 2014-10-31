@@ -396,12 +396,43 @@
             </summary>
             <param name="documentPath">The physical path to XML document.</param>
         </member>
+        <member name="T:WebAPISecureSocketLayering.Controllers.PhysicianController">
+            <summary>
+            Physician controller
+            </summary>
+        </member>
+        <member name="M:WebAPISecureSocketLayering.Controllers.PhysicianController.GetPhysicians">
+            <summary>
+            Get Physicians
+            </summary>
+            <returns>List of physicians</returns>
+        </member>
+        <member name="M:WebAPISecureSocketLayering.Controllers.PhysicianController.GetPhysician(POCOLibrary.InternalPhysicianBase)">
+            <summary>
+            Get Physician by ID
+            </summary>
+            <param name="physician">Physician object</param>
+            <returns>physician object</returns>
+        </member>
+        <member name="M:WebAPISecureSocketLayering.Controllers.PhysicianController.ActivePhysicians">
+            <summary>
+            Get Active physicians
+            </summary>
+            <returns>List of physicians</returns>
+        </member>
+        <member name="M:WebAPISecureSocketLayering.Controllers.PhysicianController.RemovePhysician(System.Int32)">
+            <summary>
+            Remove physician
+            </summary>
+            <param name="id">physician id value</param>
+            <returns>Message object</returns>
+        </member>
         <member name="M:WebAPISecureSocketLayering.Controllers.PhysicianController.AddInternalPhysician(System.Net.Http.HttpRequestMessage)">
             <summary>
             Add internal physician
             </summary>
             <param name="physicianRequest">PhysicianRequest value</param>
-            <returns></returns>
+            <returns>true/false or message object</returns>
         </member>
     </members>
 </doc>

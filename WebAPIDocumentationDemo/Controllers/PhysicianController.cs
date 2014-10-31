@@ -22,8 +22,15 @@ using WebAPIDocLib = WebAPIDocumentationExtenderLibrary;
 
 namespace WebAPISecureSocketLayering.Controllers
 {
+    /// <summary>
+    /// Physician controller
+    /// </summary>
     public class PhysicianController : PhysicianBaseController
     {
+        /// <summary>
+        /// Get Physicians
+        /// </summary>
+        /// <returns>List of physicians</returns>
         [WebAPIDocLib.ResponseType(typeof(Physicians))]
         [HttpGet]
         public new HttpResponseMessage GetPhysicians()
@@ -31,14 +38,24 @@ namespace WebAPISecureSocketLayering.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, base.GetPhysicians(), new MediaTypeHeaderValue("application/json"));
         }
 
+        /// <summary>
+        /// Get Physician by ID
+        /// </summary>
+        /// <param name="physician">Physician object</param>
+        /// <returns>physician object</returns>
         [WebAPIDocLib.ResponseType(typeof(PhysicianBase))]
-        [WebAPIDocLib.RequestType(typeof(InternalPhysicianBase), "id")]
+        [WebAPIDocLib.RequestType(typeof(InternalPhysicianBase), "physician")]
         [HttpGet]
-        public HttpResponseMessage GetPhysician(InternalPhysicianBase id)
+        public HttpResponseMessage GetPhysician(InternalPhysicianBase physician)
         {
-            return Request.CreateResponse(HttpStatusCode.OK, base.GetPhysician(id.ID), new MediaTypeHeaderValue("application/json"));
+            // Try to get physician by ID or FirstName ....
+            return Request.CreateResponse(HttpStatusCode.OK, base.GetPhysician(physician.ID), new MediaTypeHeaderValue("application/json"));
         }
 
+        /// <summary>
+        /// Get Active physicians
+        /// </summary>
+        /// <returns>List of physicians</returns>
         [WebAPIDocLib.ResponseType(typeof(ExternalPhysician))]
         [HttpGet]
         public override HttpResponseMessage ActivePhysicians()
@@ -46,6 +63,11 @@ namespace WebAPISecureSocketLayering.Controllers
             return base.ActivePhysicians();
         }
 
+        /// <summary>
+        /// Remove physician
+        /// </summary>
+        /// <param name="id">physician id value</param>
+        /// <returns>Message object</returns>
         [WebAPIDocLib.ResponseType(typeof(PhysicianBase))]
         [HttpPost]
         public override HttpResponseMessage RemovePhysician(int id)
@@ -57,7 +79,7 @@ namespace WebAPISecureSocketLayering.Controllers
         /// Add internal physician
         /// </summary>
         /// <param name="physicianRequest">PhysicianRequest value</param>
-        /// <returns></returns>
+        /// <returns>true/false or message object</returns>
         [WebAPIDocLib.RequestType(typeof(InternalPhysicianBase), "physicianRequest")]
         [WebAPIDocLib.ResponseType(typeof(bool), typeof(Message))]
         [HttpPost]

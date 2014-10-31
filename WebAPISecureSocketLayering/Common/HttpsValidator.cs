@@ -18,6 +18,8 @@ using System.Web.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Formatting;
 
+using POCOLibrary;
+
 namespace WebAPISecureSocketLayering.Common
 {
     /// <summary>
@@ -31,21 +33,17 @@ namespace WebAPISecureSocketLayering.Common
         /// <param name="actionContext">HttpActionContext value</param>
         public override void OnAuthorization(HttpActionContext actionContext)
         {
-            if (actionContext != null)
+            if (actionContext != null && actionContext.Request != null && !actionContext.Request.RequestUri.Scheme.Equals(Uri.UriSchemeHttps))
             {
                 var controllerFilters = actionContext.ControllerContext.ControllerDescriptor.GetFilters();
                 var actionFilters = actionContext.ActionDescriptor.GetFilters();
 
-                string responseMessage = string.Empty;
-
                 if ((controllerFilters != null && controllerFilters.Select(t => t.GetType() == typeof(HttpsValidator)).Count() > 0) ||
                     (actionFilters != null && actionFilters.Select(t => t.GetType() == typeof(HttpsValidator)).Count() > 0))
-                    responseMessage = "Requested URI requires HTTPS";
-
-                if (!string.IsNullOrWhiteSpace(responseMessage))
                 {
-                    if (actionContext.Request != null && actionContext.Request.RequestUri.Scheme != Uri.UriSchemeHttps)
-                        actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Forbidden, responseMessage, new MediaTypeHeaderValue("text/json"));
+                        actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Forbidden, 
+                            new Message() { Content = "Requested URI requires HTTPS" }, 
+                            new MediaTypeHeaderValue("text/json"));
                 }
             }
         }

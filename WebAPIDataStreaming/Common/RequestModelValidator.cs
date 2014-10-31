@@ -38,8 +38,7 @@ namespace WebAPIDataStreaming.Common
                 if (!actionContext.ModelState.IsValid)
                 {
                     actionContext.Response = actionContext.Request.CreateResponse(
-                     HttpStatusCode.BadRequest,
-                     new FileResponseMessage() { IsExists = false, Content = "Request is not valid !." },
+                     HttpStatusCode.BadRequest, new FileResponseMessage() { IsExists = false, Content = "Request is not valid !." },
                      new MediaTypeHeaderValue("text/json"));
                 }
             }

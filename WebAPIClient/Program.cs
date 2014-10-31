@@ -357,8 +357,7 @@ namespace WebAPIClient
                 // Validate the file and add to MultipartFormDataContent object
                 formDataContent.AddUploadFile(@"c:\nophoto.png");
                 formDataContent.AddUploadFile(@"c:\ReadMe.txt");
-                //message.AppendLine(formDataContent.AddUploadFile(@"e:\en_visio_professional_2013_x86_x64_dvd_1134691.iso"));
-
+                // Add more file
                 if (!formDataContent.HasContent()) // No files found to be uploaded
                 {
                     Console.ForegroundColor = ConsoleColor.Red;

@@ -68,8 +68,8 @@ namespace WebAPICommonLibrary
             {
                 PhysicianBase physician = Physicians.Instance().Where(p => p.ID == id).FirstOrDefault();
                 bool isRemoved = Physicians.Instance().Remove(physician);
-                return isRemoved ? Request.CreateResponse(HttpStatusCode.OK, string.Format("Physician with an ID {0} is removed!", id)) :
-                    Request.CreateResponse(HttpStatusCode.BadRequest, string.Format("Unable to remove Physician using {0} ID", id));
+                return isRemoved ? Request.CreateResponse(HttpStatusCode.OK, new Message() { Content = string.Format("Physician with an ID {0} is removed!", id) }) :
+                    Request.CreateResponse(HttpStatusCode.BadRequest, new Message() { Content = string.Format("Unable to remove Physician using {0} ID", id) });
             }
             catch (Exception exception)
             {
@@ -84,7 +84,7 @@ namespace WebAPICommonLibrary
             try
             {
                 Physicians.Instance().Add(physician);
-                return Request.CreateResponse(HttpStatusCode.Created, string.Format("New Physician is added successfully"));
+                return Request.CreateResponse(HttpStatusCode.Created, new Message() { Content = string.Format("New Physician is added successfully")});
             }
             catch (Exception exception)
             {

@@ -16,6 +16,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 
+using POCOLibrary;
+
 namespace WebAPISecureSocketLayering.Common
 {
     /// <summary>
@@ -52,7 +54,7 @@ namespace WebAPISecureSocketLayering.Common
                 thumbPrints == null ||
                 (thumbPrints != null && thumbPrints.Count() == 0))
             {
-                return request.CreateResponse(HttpStatusCode.NotAcceptable, "Thumbprint request header is not available !");
+                return request.CreateResponse(HttpStatusCode.NotAcceptable, new Message() { Content = "Thumbprint request header is not available !" });
             }
             try
             {
@@ -76,6 +78,12 @@ namespace WebAPISecureSocketLayering.Common
 
                 bool? verified = null; // A flag used to check Certificate validation
 
+                OpenFlags openFlags = OpenFlags.ReadOnly | 
+                                      OpenFlags.OpenExistingOnly | 
+                                      OpenFlags.MaxAllowed | 
+                                      OpenFlags.IncludeArchived | 
+                                      OpenFlags.ReadWrite;
+
                 foreach (var thumbPrint in thumbPrintCollection)
                 {
                     foreach (var location in locations)
@@ -83,7 +91,7 @@ namespace WebAPISecureSocketLayering.Common
                         X509Store store = new X509Store(StoreName.Root, location); // Look the certificates under Trusted Root Certification Authorities(CA)
                         try
                         {
-                            store.Open(OpenFlags.ReadOnly | OpenFlags.OpenExistingOnly | OpenFlags.MaxAllowed | OpenFlags.IncludeArchived | OpenFlags.ReadWrite);
+                            store.Open(openFlags);
 
                             X509Certificate2Collection certificates = store.Certificates.Find(X509FindType.FindByThumbprint, thumbPrint, validOnly: true);// Make sure it's valid only
 
@@ -108,17 +116,17 @@ namespace WebAPISecureSocketLayering.Common
                 }
                 if (verified.HasValue && !verified.Value)
                 {
-                    return request.CreateResponse(HttpStatusCode.Unauthorized, "Certificate is available but not valid !");
+                    return request.CreateResponse(HttpStatusCode.Unauthorized, new Message() { Content = "Certificate is available but not valid !" });
                 }
                 else
                 {
-                    return request.CreateResponse(HttpStatusCode.NotFound, "Certificate is not available !");
+                    return request.CreateResponse(HttpStatusCode.NotFound, new Message() { Content = "Certificate is not available !" });
                 }
             }
             catch (Exception exception)
             {
                 // Log error
-                return request.CreateResponse(HttpStatusCode.BadRequest, string.Concat("Exception happens while processing certificate !\n", exception));
+                return request.CreateResponse(HttpStatusCode.BadRequest, new Message() { Content = string.Concat("Exception happens while processing certificate ! \n", exception) });
             }
         }
     }
