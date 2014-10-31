@@ -1,0 +1,23 @@
+﻿@{
+    Layout = null;
+}
+@using System.Web;
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Error</title>
+</head>
+<body>
+    <hgroup>
+        <h1>Web API request error.</h1>
+        <h2>An error occurred while processing your request.Please verifiy your request is valid.</h2>
+    </hgroup>   
+    @if (HttpContext.Current.Application.Get("Error") != null)
+    {
+        var exception = HttpContext.Current.Application.Get("Error") as Exception;
+        <div><b>Exception Message</b><br><br>@exception.Message</div>
+    }
+</body>
+</html>

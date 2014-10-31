@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F8413058-FFF3-44A8-A068-74A92F358D6D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Assets</RootNamespace>
+    <AssemblyName>Assets</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Creating Self-signed Certificate And Binding to Service or Web site\Creating Self-Signed certificate.gif" />
+    <Content Include="Creating Self-signed Certificate And Binding to Service or Web site\Step 1.png" />
+    <Content Include="Creating Self-signed Certificate And Binding to Service or Web site\Step 10.png" />
+    <Content Include="Creating Self-signed Certificate And Binding to Service or Web site\Step 2.png" />
+    <Content Include="Creating Self-signed Certificate And Binding to Service or Web site\Step 3.png" />
+    <Content Include="Creating Self-signed Certificate And Binding to Service or Web site\Step 4.png" />
+    <Content Include="Creating Self-signed Certificate And Binding to Service or Web site\Step 5.png" />
+    <Content Include="Creating Self-signed Certificate And Binding to Service or Web site\Step 6.png" />
+    <Content Include="Creating Self-signed Certificate And Binding to Service or Web site\Step 7.png" />
+    <Content Include="Creating Self-signed Certificate And Binding to Service or Web site\Step 8.png" />
+    <Content Include="Creating Self-signed Certificate And Binding to Service or Web site\Step 9.png" />
+    <Content Include="Exporting Certificate\Exporting Certificate.gif" />
+    <Content Include="Exporting Certificate\Step 1.png" />
+    <Content Include="Exporting Certificate\Step 2.png" />
+    <Content Include="Exporting Certificate\Step 3.png" />
+    <Content Include="Exporting Certificate\Step 4.png" />
+    <Content Include="Exporting Certificate\Step 5.png" />
+    <Content Include="Exporting Certificate\Step 6.png" />
+    <Content Include="Exporting Self-signed Certificate\Export Self-signed Certificate.gif" />
+    <Content Include="Exporting Self-signed Certificate\Step 1.png" />
+    <Content Include="Exporting Self-signed Certificate\Step 2.png" />
+    <Content Include="Exporting Self-signed Certificate\Step 3.png" />
+    <Content Include="Exporting Self-signed Certificate\Step 4.png" />
+    <Content Include="Trusted Root Certification Authorities\Step 1.png" />
+    <Content Include="Trusted Root Certification Authorities\Step 10.png" />
+    <Content Include="Trusted Root Certification Authorities\Step 11.png" />
+    <Content Include="Trusted Root Certification Authorities\Step 12.png" />
+    <Content Include="Trusted Root Certification Authorities\Step 2.png" />
+    <Content Include="Trusted Root Certification Authorities\Step 3.png" />
+    <Content Include="Trusted Root Certification Authorities\Step 4.png" />
+    <Content Include="Trusted Root Certification Authorities\Step 5.png" />
+    <Content Include="Trusted Root Certification Authorities\Step 6.png" />
+    <Content Include="Trusted Root Certification Authorities\Step 7.png" />
+    <Content Include="Trusted Root Certification Authorities\Step 8.png" />
+    <Content Include="Trusted Root Certification Authorities\Step 9.png" />
+    <Content Include="Trusted Root Certification Authorities\Trusted Root Certification Authorities.gif" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
