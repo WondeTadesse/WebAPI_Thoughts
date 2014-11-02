@@ -58,7 +58,13 @@ namespace WebAPISecureSocketLayering.Common
             }
             try
             {
+                List<StoreLocation> locations = new List<StoreLocation> // Certificate location indicators
+                {    
+                    StoreLocation.CurrentUser, 
+                    StoreLocation.LocalMachine
+                };
 
+                bool? verified = null; // A flag used to check Certificate validation
                 List<string> thumbPrintCollection = new List<string>();
 
                 if (thumbPrints.FirstOrDefault().Contains(',')) // Has many thumbprints
@@ -70,19 +76,7 @@ namespace WebAPISecureSocketLayering.Common
                     thumbPrintCollection.Add(thumbPrints.FirstOrDefault());
                 }
 
-                List<StoreLocation> locations = new List<StoreLocation> // Certificate location indicators
-                {    
-                    StoreLocation.CurrentUser, 
-                    StoreLocation.LocalMachine
-                };
-
-                bool? verified = null; // A flag used to check Certificate validation
-
-                OpenFlags openFlags = OpenFlags.ReadOnly | 
-                                      OpenFlags.OpenExistingOnly | 
-                                      OpenFlags.MaxAllowed | 
-                                      OpenFlags.IncludeArchived | 
-                                      OpenFlags.ReadWrite;
+                OpenFlags openFlags = OpenFlags.OpenExistingOnly | OpenFlags.ReadOnly;
 
                 foreach (var thumbPrint in thumbPrintCollection)
                 {
@@ -97,7 +91,15 @@ namespace WebAPISecureSocketLayering.Common
 
                             if (certificates != null && certificates.Count > 0)
                             {
-                                return request.CreateResponse(HttpStatusCode.OK);
+                                // Check if the CN(Host + Domain Name) contains the request host  
+                                foreach (var certificate in certificates)
+                                {
+                                    if (!string.IsNullOrWhiteSpace(certificate.Subject) &&
+                                        !string.IsNullOrWhiteSpace(request.RequestUri.Host) &&
+                                        certificate.Subject.ToLower().Contains(request.RequestUri.Host.ToLower()))
+
+                                        return request.CreateResponse(HttpStatusCode.OK);
+                                }
                             }
                             else
                             {
@@ -126,7 +128,7 @@ namespace WebAPISecureSocketLayering.Common
             catch (Exception exception)
             {
                 // Log error
-                return request.CreateResponse(HttpStatusCode.BadRequest, new Message() { Content = string.Concat("Exception happens while processing certificate ! \n", exception) });
+                return request.CreateResponse(HttpStatusCode.BadRequest, new Message() { Content = string.Concat("Exception happens while processing certificate !\n", exception) });
             }
         }
     }

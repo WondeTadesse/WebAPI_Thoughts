@@ -21,7 +21,7 @@ using POCOLibrary;
 
 namespace WebAPISecureSocketLayering.Controllers
 {
-    [HttpsValidator] // Enforce HTTPS request to the contoller
+    [HttpsValidator] // Enforce HTTPS request to the controller
     public class PhysicianController : PhysicianBaseController
     {
         [ActionName("GetPhysicians")]

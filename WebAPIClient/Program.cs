@@ -89,7 +89,7 @@ namespace WebAPIClient
                 Console.WriteLine("Select the operation you want to perform !\nNote: Each operation result will be displayed for only 5 seconds.\n");
                 Console.WriteLine("Select 1. To perform GetFileMetaData.");
                 Console.WriteLine("Select 2. To perform Download. Default Download files path is C:\\");
-                Console.WriteLine("Select 3. To perform Upload. Default path for files to be uploaed is C:\\");
+                Console.WriteLine("Select 3. To perform Upload. Default path for files to be uploaded is C:\\");
                 Console.WriteLine("Select 4. To perform IIS Https Call.");
                 Console.WriteLine("Select 5. To perform Self-Host Https Call.");
                 Console.WriteLine("Select 6. To perform OWIN Https Call.");
@@ -460,7 +460,6 @@ namespace WebAPIClient
 
                 using (HttpClient httpClient = new HttpClient())
                 {
-
                     await httpClient.SendAsync(request, token).
                         ContinueWith((response)
                             =>
@@ -695,9 +694,6 @@ namespace WebAPIClient
 
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine(message);
-
-            // Need to changed based on the machine where the HTTPS website is hosted
-            string machineName = Environment.MachineName;
 
             // Process request if server name contains "localhost" or machine name
             if (!string.IsNullOrWhiteSpace(certificate.Subject) && (
