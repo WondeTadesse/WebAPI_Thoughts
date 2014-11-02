@@ -46,7 +46,7 @@ namespace WebAPISecureSocketLayering.Controllers
         [WebAPIDocLib.ResponseType(typeof(PhysicianBase))]
         [WebAPIDocLib.RequestType(typeof(InternalPhysicianBase), "physician")]
         [HttpGet]
-        public HttpResponseMessage GetPhysician(InternalPhysicianBase physician)
+        public HttpResponseMessage GetPhysician([FromUri]InternalPhysicianBase physician)
         {
             // Try to get physician by ID or FirstName ....
             return Request.CreateResponse(HttpStatusCode.OK, base.GetPhysician(physician.ID), new MediaTypeHeaderValue("application/json"));
@@ -58,9 +58,9 @@ namespace WebAPISecureSocketLayering.Controllers
         /// <returns>List of physicians</returns>
         [WebAPIDocLib.ResponseType(typeof(ExternalPhysician))]
         [HttpGet]
-        public override HttpResponseMessage ActivePhysicians()
+        public new HttpResponseMessage ActivePhysicians()
         {
-            return base.ActivePhysicians();
+            return Request.CreateResponse(HttpStatusCode.OK, base.ActivePhysicians(), new MediaTypeHeaderValue("application/json")); 
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace WebAPISecureSocketLayering.Controllers
         /// <returns>Message object</returns>
         [WebAPIDocLib.ResponseType(typeof(PhysicianBase))]
         [HttpPost]
-        public override HttpResponseMessage RemovePhysician(int id)
+        public new HttpResponseMessage RemovePhysician([FromBody]int id)
         {
             return base.RemovePhysician(id);
         }

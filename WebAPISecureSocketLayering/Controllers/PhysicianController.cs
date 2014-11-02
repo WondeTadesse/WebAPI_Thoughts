@@ -50,10 +50,10 @@ namespace WebAPISecureSocketLayering.Controllers
             }
         }
 
-        [HttpPost]
-        public override HttpResponseMessage ActivePhysicians()
+        [HttpGet]
+        public new HttpResponseMessage ActivePhysicians()
         {
-            return base.ActivePhysicians();
+            return Request.CreateResponse(HttpStatusCode.OK, base.ActivePhysicians(), new MediaTypeHeaderValue("application/json"));
         }
 
         [HttpGet]

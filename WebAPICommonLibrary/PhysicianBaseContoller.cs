@@ -46,22 +46,20 @@ namespace WebAPICommonLibrary
             }
         }
 
-        [HttpGet]
-        public virtual HttpResponseMessage ActivePhysicians()
+        [NonAction]
+        public virtual List<PhysicianBase> ActivePhysicians()
         {
             try
             {
-                var result = Physicians.Instance().Where(p => p.IsActive == true).ToList();
-                return result != null ? Request.CreateResponse(HttpStatusCode.OK, result) : Request.CreateResponse(HttpStatusCode.BadRequest);
+                return Physicians.Instance().Where(p => p.IsActive == true).ToList();
             }
             catch (Exception exception)
             {
-                return Request.CreateResponse(HttpStatusCode.InternalServerError,
-                     new Message() { Content = exception.Message });
+                throw exception;
             }
         }
 
-        [HttpPost]
+        [NonAction]
         public virtual HttpResponseMessage RemovePhysician(int id)
         {
             try
@@ -78,7 +76,7 @@ namespace WebAPICommonLibrary
             }
         }
 
-        [HttpPost]
+        [NonAction]
         public virtual HttpResponseMessage AddPhysician(PhysicianBase physician)
         {
             try
