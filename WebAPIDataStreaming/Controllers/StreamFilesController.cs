@@ -31,6 +31,8 @@ namespace WebAPIDataStreaming.Controllers
     [RequestModelValidator]
     public class StreamFilesController : ApiController
     {
+        private string exMessage = "Opps! exception happens";
+
         /// <summary>
         /// Get File meta data
         /// </summary>
@@ -39,15 +41,16 @@ namespace WebAPIDataStreaming.Controllers
         [Route("getfilemetadata")]
         public HttpResponseMessage GetFileMetaData(string fileName)
         {
+            FileMetaData metaData = new FileMetaData();
+            metaData.FileResponseMessage.IsExists = false;
+
             try
             {
-                string filePath = string.Concat(this.GetDownloadPath(), "\\", fileName);
+                string filePath = Path.Combine(this.GetDownloadPath(), "\\", fileName);
                 FileInfo fileInfo = new FileInfo(filePath);
-                FileMetaData metaData = new FileMetaData();
 
                 if (!fileInfo.Exists)
                 {
-                    metaData.FileResponseMessage.IsExists = false;
                     metaData.FileResponseMessage.Content = string.Format("{0} file is not found !", fileName);
                     return Request.CreateResponse(HttpStatusCode.NotFound, metaData, new MediaTypeHeaderValue("text/json"));
                 }
@@ -62,7 +65,18 @@ namespace WebAPIDataStreaming.Controllers
             }
             catch (Exception exception)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exception);
+                // Log exception and return gracefully
+
+
+                if (string.IsNullOrWhiteSpace(exception.Message))
+                {
+                    metaData.FileResponseMessage.Content = string.Concat("Exception : - StackTrace : ", exception.StackTrace);
+                }
+                else
+                {
+                    metaData.FileResponseMessage.Content = string.Concat("Exception : - Message : ", exception.Message, " ", "StackTrace : ", exception.StackTrace);
+                }
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, metaData, new MediaTypeHeaderValue("text/json"));
             }
 
         }
@@ -76,17 +90,18 @@ namespace WebAPIDataStreaming.Controllers
         [Route("searchfileindownloaddirectory")]
         public HttpResponseMessage SearchFileInDownloadDirectory(string fileName)
         {
+            List<FileMetaData> filesMetaData = new List<FileMetaData>();
+            FileMetaData metaData = new FileMetaData();
             try
             {
                 string[] files = Directory.GetFiles(this.GetDownloadPath(), fileName, SearchOption.AllDirectories);
 
                 if (files != null && files.Count() > 0)
                 {
-                    List<FileMetaData> filesMetaData = new List<FileMetaData>();
                     foreach (string file in files)
                     {
                         FileInfo fileInfo = new FileInfo(file);
-                        FileMetaData metaData = new FileMetaData();
+                        metaData = new FileMetaData();
                         metaData.FileResponseMessage.IsExists = true;
                         metaData.FileName = fileName;
                         metaData.FileExtension = fileInfo.Extension;
@@ -109,7 +124,23 @@ namespace WebAPIDataStreaming.Controllers
             }
             catch (Exception exception)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exception);
+                if (!string.IsNullOrWhiteSpace(exception.Message) && !string.IsNullOrWhiteSpace(exception.StackTrace))
+                {
+                    metaData.FileResponseMessage.Content = string.Concat(exMessage, " Exception : - Message : ", exception.Message, " ", "StackTrace : ", exception.StackTrace);
+                }
+                else if (!string.IsNullOrWhiteSpace(exception.Message) && string.IsNullOrWhiteSpace(exception.StackTrace))
+                {
+                    metaData.FileResponseMessage.Content = string.Concat(exMessage, " Exception : - Message : ", exception.Message);
+                }
+                else if (string.IsNullOrWhiteSpace(exception.Message) && !string.IsNullOrWhiteSpace(exception.StackTrace))
+                {
+                    metaData.FileResponseMessage.Content = string.Concat(exMessage, " Exception : - StackTrace : ", exception.StackTrace);
+                }
+                else
+                {
+                    metaData.FileResponseMessage.Content = exMessage;
+                }
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, metaData, new MediaTypeHeaderValue("text/json"));
             }
         }
 
@@ -139,11 +170,11 @@ namespace WebAPIDataStreaming.Controllers
         public HttpResponseMessage DownloadFile(string fileName)
         {
             HttpResponseMessage response = Request.CreateResponse();
+            FileMetaData metaData = new FileMetaData();
             try
             {
-                string filePath = string.Concat(this.GetDownloadPath(), "\\", fileName);
+                string filePath = Path.Combine(this.GetDownloadPath(), "\\", fileName);
                 FileInfo fileInfo = new FileInfo(filePath);
-                FileMetaData metaData = new FileMetaData();
 
                 if (!fileInfo.Exists)
                 {
@@ -164,7 +195,24 @@ namespace WebAPIDataStreaming.Controllers
             }
             catch (Exception exception)
             {
-                response = Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exception);
+                if (!string.IsNullOrWhiteSpace(exception.Message) && !string.IsNullOrWhiteSpace(exception.StackTrace))
+                {
+                    metaData.FileResponseMessage.Content = string.Concat(exMessage, " Exception : - Message : ", exception.Message, " ", "StackTrace : ", exception.StackTrace);
+                }
+                else if (!string.IsNullOrWhiteSpace(exception.Message) && string.IsNullOrWhiteSpace(exception.StackTrace))
+                {
+                    metaData.FileResponseMessage.Content = string.Concat(exMessage, " Exception : - Message : ", exception.Message);
+                }
+                else if (string.IsNullOrWhiteSpace(exception.Message) && !string.IsNullOrWhiteSpace(exception.StackTrace))
+                {
+                    metaData.FileResponseMessage.Content = string.Concat(exMessage, " Exception : - StackTrace : ", exception.StackTrace);
+                }
+                else
+                {
+                    metaData.FileResponseMessage.Content = exMessage;
+                }
+                response = Request.CreateResponse(HttpStatusCode.InternalServerError, metaData, new MediaTypeHeaderValue("text/json"));
+
             }
             return response;
         }
@@ -181,7 +229,7 @@ namespace WebAPIDataStreaming.Controllers
         {
             HttpResponseMessage response = Request.CreateResponse();
             List<FileResponseMessage> fileResponseMessages = new List<FileResponseMessage>();
-            FileResponseMessage fileResponseMessage = new FileResponseMessage { IsExists = false, };
+            FileResponseMessage fileResponseMessage = new FileResponseMessage { IsExists = false };
 
             try
             {
@@ -200,7 +248,25 @@ namespace WebAPIDataStreaming.Controllers
             }
             catch (Exception exception)
             {
-                response = Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exception);
+                fileResponseMessage = new FileResponseMessage { IsExists = false };
+                if (!string.IsNullOrWhiteSpace(exception.Message) && !string.IsNullOrWhiteSpace(exception.StackTrace))
+                {
+                    fileResponseMessage.Content = string.Concat(exMessage, " Exception : - Message : ", exception.Message, " ", "StackTrace : ", exception.StackTrace);
+                }
+                else if (!string.IsNullOrWhiteSpace(exception.Message) && string.IsNullOrWhiteSpace(exception.StackTrace))
+                {
+                    fileResponseMessage.Content = string.Concat(exMessage, " Exception : - Message : ", exception.Message);
+                }
+                else if (string.IsNullOrWhiteSpace(exception.Message) && !string.IsNullOrWhiteSpace(exception.StackTrace))
+                {
+                    fileResponseMessage.Content = string.Concat(exMessage, " Exception : - StackTrace : ", exception.StackTrace);
+                }
+                else
+                {
+                    fileResponseMessage.Content = exMessage;
+                }
+                fileResponseMessages.Add(fileResponseMessage);
+                response = Request.CreateResponse(HttpStatusCode.InternalServerError, fileResponseMessages, new MediaTypeHeaderValue("text/json"));
             }
             return response;
         }
@@ -251,7 +317,7 @@ namespace WebAPIDataStreaming.Controllers
 
                     foreach (string file in files)
                     {
-                        string filePath = string.Concat(uploadPath, "\\", file);
+                        string filePath = Path.Combine(uploadPath, "\\", file);
                         fileResponseMessage = new FileResponseMessage();
 
                         if (!overWrite && File.Exists(filePath))
@@ -288,12 +354,10 @@ namespace WebAPIDataStreaming.Controllers
                 }
                 catch (Exception exception)
                 {
-                    response = Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exception);
+                    throw exception;
                 }
             }
             return response;
         }
-
-
     }
 }

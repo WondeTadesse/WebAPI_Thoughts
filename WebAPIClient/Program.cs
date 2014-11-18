@@ -65,7 +65,7 @@ namespace WebAPIClient
 
             ExecuteOperation(() => Console.WriteLine("You exited the system successfully !"), 2);
         }
-        
+
         #region Main Operations
 
         /// <summary>
@@ -75,6 +75,7 @@ namespace WebAPIClient
         {
             ConsoleKeyInfo keyInfo;
             bool isNewLineRequired = false;
+            Console.WindowWidth = 90;
 
             do
             {
@@ -83,8 +84,6 @@ namespace WebAPIClient
                     Console.WriteLine();
                 else
                     isNewLineRequired = true;
-
-                Console.WindowWidth = 90;
 
                 Console.WriteLine("Select the operation you want to perform !\nNote: Each operation result will be displayed for only 5 seconds.\n");
                 Console.WriteLine("Select 1. To perform GetFileMetaData.");
@@ -276,7 +275,7 @@ namespace WebAPIClient
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Please specify file name  with extension and Press Enter :- ");
             string fileName = Console.ReadLine();
-            string localDownloadPath = string.Concat(@"c:\", fileName); // the path can be configurable
+            string localDownloadPath = Path.Combine(@"c:\", fileName); // the path can be configurable
             bool overWrite = true;
             string actionURL = string.Concat("downloadasync?fileName=", fileName);
 
@@ -292,7 +291,7 @@ namespace WebAPIClient
                     httpClient.BaseAddress = baseStreamingURL;
                     HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, actionURL);
 
-                    await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead).
+                    await httpClient.SendAsync(request, HttpCompletionOption.ResponseContentRead).
                         ContinueWith((response)
                             =>
                         {
@@ -322,8 +321,7 @@ namespace WebAPIClient
         /// <param name="localDownloadFilePath">Local download file path</param>
         /// <param name="overWrite">An indicator to overwrite a file if it exist in the client.</param>
         /// <param name="response">Awaitable HttpResponseMessage task value</param>
-        private static void ProcessDownloadResponse(string localDownloadFilePath, bool overWrite,
-            Task<HttpResponseMessage> response)
+        private static void ProcessDownloadResponse(string localDownloadFilePath, bool overWrite, Task<HttpResponseMessage> response)
         {
             if (response.Result.IsSuccessStatusCode)
             {

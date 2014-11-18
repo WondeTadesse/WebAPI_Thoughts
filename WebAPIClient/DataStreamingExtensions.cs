@@ -221,7 +221,7 @@ namespace WebAPIClient
             if (!overWrite && File.Exists(fileFullPath))
                 throw new InvalidOperationException(string.Format("{0} file is already exists !", fileFullPath));
 
-            if (!content.Headers.ContentLength.HasValue && content.Headers.ContentLength.Value > 0)
+            if (!content.Headers.ContentLength.HasValue && content.Headers.ContentLength.Value <= 0)
                 throw new InvalidOperationException(string.Format("{0} file stream content is empty !", fileFullPath));
         }
 
