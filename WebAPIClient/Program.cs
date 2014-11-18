@@ -291,7 +291,7 @@ namespace WebAPIClient
                     httpClient.BaseAddress = baseStreamingURL;
                     HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, actionURL);
 
-                    await httpClient.SendAsync(request, HttpCompletionOption.ResponseContentRead).
+                    await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead).
                         ContinueWith((response)
                             =>
                         {

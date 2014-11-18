@@ -66,8 +66,7 @@ namespace WebAPIDataStreaming.Controllers
             catch (Exception exception)
             {
                 // Log exception and return gracefully
-
-
+                
                 if (string.IsNullOrWhiteSpace(exception.Message))
                 {
                     metaData.FileResponseMessage.Content = string.Concat("Exception : - StackTrace : ", exception.StackTrace);
@@ -78,7 +77,6 @@ namespace WebAPIDataStreaming.Controllers
                 }
                 return Request.CreateResponse(HttpStatusCode.InternalServerError, metaData, new MediaTypeHeaderValue("text/json"));
             }
-
         }
 
         /// <summary>
@@ -248,6 +246,7 @@ namespace WebAPIDataStreaming.Controllers
             }
             catch (Exception exception)
             {
+                // Log exception and return gracefully
                 fileResponseMessage = new FileResponseMessage { IsExists = false };
                 if (!string.IsNullOrWhiteSpace(exception.Message) && !string.IsNullOrWhiteSpace(exception.StackTrace))
                 {
