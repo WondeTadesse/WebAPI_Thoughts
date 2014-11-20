@@ -66,15 +66,9 @@ namespace WebAPIDataStreaming.Controllers
             catch (Exception exception)
             {
                 // Log exception and return gracefully
-                
-                if (string.IsNullOrWhiteSpace(exception.Message))
-                {
-                    metaData.FileResponseMessage.Content = string.Concat("Exception : - StackTrace : ", exception.StackTrace);
-                }
-                else
-                {
-                    metaData.FileResponseMessage.Content = string.Concat("Exception : - Message : ", exception.Message, " ", "StackTrace : ", exception.StackTrace);
-                }
+
+                metaData = new FileMetaData();
+                metaData.FileResponseMessage.Content = ProcessException(exception);
                 return Request.CreateResponse(HttpStatusCode.InternalServerError, metaData, new MediaTypeHeaderValue("text/json"));
             }
         }
@@ -110,35 +104,24 @@ namespace WebAPIDataStreaming.Controllers
                     return Request.CreateResponse(HttpStatusCode.OK, filesMetaData, new MediaTypeHeaderValue("text/json"));
                 }
 
-                return Request.CreateResponse(HttpStatusCode.NotFound,
-                    new FileMetaData()
+                filesMetaData.Add(new FileMetaData()
                     {
                         FileResponseMessage = new FileResponseMessage
                         {
                             IsExists = false,
                             Content = string.Format("{0} file is not found !", fileName)
                         }
-                    }, new MediaTypeHeaderValue("text/json"));
+                    });
+
+                return Request.CreateResponse(HttpStatusCode.NotFound, filesMetaData, new MediaTypeHeaderValue("text/json"));
             }
             catch (Exception exception)
             {
-                if (!string.IsNullOrWhiteSpace(exception.Message) && !string.IsNullOrWhiteSpace(exception.StackTrace))
-                {
-                    metaData.FileResponseMessage.Content = string.Concat(exMessage, " Exception : - Message : ", exception.Message, " ", "StackTrace : ", exception.StackTrace);
-                }
-                else if (!string.IsNullOrWhiteSpace(exception.Message) && string.IsNullOrWhiteSpace(exception.StackTrace))
-                {
-                    metaData.FileResponseMessage.Content = string.Concat(exMessage, " Exception : - Message : ", exception.Message);
-                }
-                else if (string.IsNullOrWhiteSpace(exception.Message) && !string.IsNullOrWhiteSpace(exception.StackTrace))
-                {
-                    metaData.FileResponseMessage.Content = string.Concat(exMessage, " Exception : - StackTrace : ", exception.StackTrace);
-                }
-                else
-                {
-                    metaData.FileResponseMessage.Content = exMessage;
-                }
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, metaData, new MediaTypeHeaderValue("text/json"));
+                // Log exception and return gracefully
+                metaData = new FileMetaData();
+                metaData.FileResponseMessage.Content = ProcessException(exception);
+                filesMetaData.Add(metaData);
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, filesMetaData, new MediaTypeHeaderValue("text/json"));
             }
         }
 
@@ -193,24 +176,10 @@ namespace WebAPIDataStreaming.Controllers
             }
             catch (Exception exception)
             {
-                if (!string.IsNullOrWhiteSpace(exception.Message) && !string.IsNullOrWhiteSpace(exception.StackTrace))
-                {
-                    metaData.FileResponseMessage.Content = string.Concat(exMessage, " Exception : - Message : ", exception.Message, " ", "StackTrace : ", exception.StackTrace);
-                }
-                else if (!string.IsNullOrWhiteSpace(exception.Message) && string.IsNullOrWhiteSpace(exception.StackTrace))
-                {
-                    metaData.FileResponseMessage.Content = string.Concat(exMessage, " Exception : - Message : ", exception.Message);
-                }
-                else if (string.IsNullOrWhiteSpace(exception.Message) && !string.IsNullOrWhiteSpace(exception.StackTrace))
-                {
-                    metaData.FileResponseMessage.Content = string.Concat(exMessage, " Exception : - StackTrace : ", exception.StackTrace);
-                }
-                else
-                {
-                    metaData.FileResponseMessage.Content = exMessage;
-                }
+                // Log exception and return gracefully
+                metaData = new FileMetaData();
+                metaData.FileResponseMessage.Content = ProcessException(exception);
                 response = Request.CreateResponse(HttpStatusCode.InternalServerError, metaData, new MediaTypeHeaderValue("text/json"));
-
             }
             return response;
         }
@@ -248,22 +217,7 @@ namespace WebAPIDataStreaming.Controllers
             {
                 // Log exception and return gracefully
                 fileResponseMessage = new FileResponseMessage { IsExists = false };
-                if (!string.IsNullOrWhiteSpace(exception.Message) && !string.IsNullOrWhiteSpace(exception.StackTrace))
-                {
-                    fileResponseMessage.Content = string.Concat(exMessage, " Exception : - Message : ", exception.Message, " ", "StackTrace : ", exception.StackTrace);
-                }
-                else if (!string.IsNullOrWhiteSpace(exception.Message) && string.IsNullOrWhiteSpace(exception.StackTrace))
-                {
-                    fileResponseMessage.Content = string.Concat(exMessage, " Exception : - Message : ", exception.Message);
-                }
-                else if (string.IsNullOrWhiteSpace(exception.Message) && !string.IsNullOrWhiteSpace(exception.StackTrace))
-                {
-                    fileResponseMessage.Content = string.Concat(exMessage, " Exception : - StackTrace : ", exception.StackTrace);
-                }
-                else
-                {
-                    fileResponseMessage.Content = exMessage;
-                }
+                fileResponseMessage.Content = ProcessException(exception);
                 fileResponseMessages.Add(fileResponseMessage);
                 response = Request.CreateResponse(HttpStatusCode.InternalServerError, fileResponseMessages, new MediaTypeHeaderValue("text/json"));
             }
@@ -357,6 +311,30 @@ namespace WebAPIDataStreaming.Controllers
                 }
             }
             return response;
+        }
+
+        private string ProcessException(Exception exception)
+        {
+            if (exception == null)
+            {
+                return exMessage;
+            }
+            if (!string.IsNullOrWhiteSpace(exception.Message) && !string.IsNullOrWhiteSpace(exception.StackTrace))
+            {
+                return string.Concat(exMessage, " Exception : - Message : ", exception.Message, " ", "StackTrace : ", exception.StackTrace);
+            }
+            else if (!string.IsNullOrWhiteSpace(exception.Message) && string.IsNullOrWhiteSpace(exception.StackTrace))
+            {
+                return string.Concat(exMessage, " Exception : - Message : ", exception.Message);
+            }
+            else if (string.IsNullOrWhiteSpace(exception.Message) && !string.IsNullOrWhiteSpace(exception.StackTrace))
+            {
+                return string.Concat(exMessage, " Exception : - StackTrace : ", exception.StackTrace);
+            }
+            else
+            {
+                return exMessage;
+            }
         }
     }
 }
