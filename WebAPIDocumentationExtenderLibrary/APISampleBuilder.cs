@@ -223,7 +223,7 @@ namespace WebAPIDocumentationExtenderLibrary
 
             if (!string.IsNullOrWhiteSpace(properties))
             {
-                string pluralSingular = typeProperties.Count > 1 ? "ises are" : "y is";
+                string pluralSingular = typeProperties.Count > 1 ? "ies are" : "y is";
                 if (type.IsAbstract)
                 {
                     messageHeader = string.Concat(messageHeader, string.Format("{0}.It's propert{1} {2}", BuildSampleHeader(type), pluralSingular, properties));
