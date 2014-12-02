@@ -204,8 +204,8 @@ namespace WebAPIDocumentationExtenderLibrary
         private static string BuildSampleHeader(Type type, string header, string input)
         {
             if (type.IsInterface)
-                return string.Concat(input, ".Sample is not available.\nAny type that implements this interface can be ", header.ToLower().Equals("response") ? "expected." : "used.");
-            return string.Concat(input, ".Sample is not available.\nAny type that drives from this class can be ", header.ToLower().Equals("response") ? "expected." : "used.");
+                return string.Concat(input, ".Sample is not available.\nAny type that implements this interface can be ", header.ToLower().Equals("response") ? "expected as response." : "used as request.");
+            return string.Concat(input, ".Sample is not available.\nAny type that inherits this class can be ", header.ToLower().Equals("response") ? "expected as response." : "used as request.");
         }
 
         /// <summary>
@@ -271,9 +271,5 @@ namespace WebAPIDocumentationExtenderLibrary
         }
 
         #endregion
-
-
-
-
     }
 }
