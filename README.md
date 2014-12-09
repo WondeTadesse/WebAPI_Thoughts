@@ -12,15 +12,23 @@ ASP.Net Web API related projects. It touches most parts of the technology throug
 The Web API Client App menu
 
 Select the operation you want to perform !
+
 Note: Each operation result will be displayed for only 5 seconds.
 
 Select 1. To perform GetFileMetaData.
-Select 2. To perform Download. Default Download files path is C:\
-Select 3. To perform Upload. Default path for files to be uploaded is C:\
+
+Select 2. To perform Download. Default Download files path is c:\
+
+Select 3. To perform Upload. Default path for files to be uploaded is c:\
+
 Select 4. To perform IIS Https Call.
+
 Select 5. To perform Self-Host Https Call.
-Select 6. To perform OWIN Https Call.
+
+Select 6. To pefrom OWIN Https Call.
+
 Select 7. To Search file in download directory.
-Select End. To Exit.
+
+Select End. To exit.
 
 
