@@ -35,7 +35,7 @@ namespace WebAPIClient
 {
     public class Program
     {
-        #region Private Static Variables
+        #region Private Static Variables 
 
         static string serverFullName;
         static Uri baseStreamingURL;
@@ -66,7 +66,7 @@ namespace WebAPIClient
             ExecuteOperation(() => Console.WriteLine("You exited the system successfully !"), 2);
         }
 
-        #region Main Operations
+        #region Main Operations 
 
         /// <summary>
         /// Main menu
@@ -527,7 +527,7 @@ namespace WebAPIClient
                 // Create server
                 using (HttpSelfHostServer server = new HttpSelfHostServer(config))
                 {
-                    // Open sever
+                    // Open server
                     server.OpenAsync().Wait();
                     Console.WriteLine(string.Concat("Opening server ", serverDefaultSecureURL));
                     Console.WriteLine();
@@ -643,7 +643,7 @@ namespace WebAPIClient
 
         #endregion
 
-        #region Private Methods
+        #region Private Methods 
 
         /// <summary>
         /// Execute operation action callback method

@@ -17,13 +17,14 @@ namespace POCOLibrary
 {
     public class Physicians : List<PhysicianBase>
     {
-        #region Private Members  
+        #region Private Members
 
-        private static Physicians _instance = new Physicians();
-        
+        private static Physicians _instance;
+        private volatile static object locker = new object();
+
         #endregion
 
-        #region Constructor 
+        #region Constructor
 
         private Physicians()
         {
@@ -36,15 +37,18 @@ namespace POCOLibrary
 
         #endregion
 
-        #region Public Methods 
-        
+        #region Public Methods
+
         public static Physicians Instance()
         {
             if (_instance == null)
             {
-                lock (_instance)
+                lock (locker)
                 {
-                    _instance = new Physicians();
+                    if (_instance == null)
+                    {
+                        _instance = new Physicians();
+                    }
                 }
             }
             return _instance;

@@ -126,22 +126,6 @@ namespace WebAPIDataStreaming.Controllers
         }
 
         /// <summary>
-        /// Asynchronous Download file
-        /// </summary>
-        /// <param name="fileName">FileName value</param>
-        /// <returns>Tasked File stream response</returns>
-        [Route("downloadasync")]
-        [HttpGet]
-        public async Task<HttpResponseMessage> DownloadFileAsync(string fileName)
-        {
-            return await new TaskFactory().StartNew(
-                () =>
-                {
-                    return DownloadFile(fileName);
-                });
-        }
-
-        /// <summary>
         /// Download file
         /// </summary>
         /// <param name="fileName">FileName value</param>
@@ -154,7 +138,7 @@ namespace WebAPIDataStreaming.Controllers
             FileMetaData metaData = new FileMetaData();
             try
             {
-                string filePath = Path.Combine(this.GetDownloadPath(), "\\", fileName);
+                string filePath = Path.Combine(this.GetDownloadPath(),fileName);
                 FileInfo fileInfo = new FileInfo(filePath);
 
                 if (!fileInfo.Exists)
@@ -184,6 +168,21 @@ namespace WebAPIDataStreaming.Controllers
             return response;
         }
 
+        /// <summary>
+        /// Asynchronous Download file
+        /// </summary>
+        /// <param name="fileName">FileName value</param>
+        /// <returns>Tasked File stream response</returns>
+        [Route("downloadasync")]
+        [HttpGet]
+        public async Task<HttpResponseMessage> DownloadFileAsync(string fileName)
+        {
+            return await new TaskFactory().StartNew(
+                () =>
+                {
+                    return DownloadFile(fileName);
+                });
+        }
 
         /// <summary>
         /// Upload file(s)
@@ -200,7 +199,6 @@ namespace WebAPIDataStreaming.Controllers
 
             try
             {
-
                 if (!Request.Content.IsMimeMultipartContent())
                 {
                     fileResponseMessage.Content = "Upload data request is not valid !";
@@ -270,7 +268,7 @@ namespace WebAPIDataStreaming.Controllers
 
                     foreach (string file in files)
                     {
-                        string filePath = Path.Combine(uploadPath, "\\", file);
+                        string filePath = Path.Combine(uploadPath, file);
                         fileResponseMessage = new FileResponseMessage();
 
                         if (!overWrite && File.Exists(filePath))
@@ -313,6 +311,11 @@ namespace WebAPIDataStreaming.Controllers
             return response;
         }
 
+        /// <summary>
+        /// Process exception
+        /// </summary>
+        /// <param name="exception">Exception value</param>
+        /// <returns>Message string</returns>
         private string ProcessException(Exception exception)
         {
             if (exception == null)
