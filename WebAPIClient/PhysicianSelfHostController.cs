@@ -43,7 +43,7 @@ namespace WebAPICommonLibrary
             catch (Exception exception)
             {
                 return Request.CreateResponse(HttpStatusCode.InternalServerError,
-                    new Message().Content = string.Concat("Error happened : - Message", exception.Message),
+                    new Message().Content = string.Concat("Error happened : - Message ", exception.Message),
                     new MediaTypeHeaderValue("text/json"));
             }
         }       
