@@ -8,6 +8,8 @@ ASP.Net Web API related projects. It touches most parts of the technology throug
 
  3. Web API Thoughts 3 of 3 - Extending Web API Documentation(http://www.codeproject.com/Articles/838277/Web-API-Thoughts-of-Extending-Web-API-Documentatio)
 
+ Nuget Package - https://www.nuget.org/packages/WebAPI-DocumentX/
+
 
 The Web API Client App menu
 
