@@ -4,6 +4,26 @@
         <name>WebAPIDocumentationDemo</name>
     </assembly>
     <members>
+        <member name="T:WebAPIDocumentationDemo.InternalPhysicianConvertor">
+            <summary>
+            Internal Physician Converter 
+            </summary>
+        </member>
+        <member name="M:WebAPIDocumentationDemo.InternalPhysicianConvertor.Create(System.Type)">
+            <summary>
+            Internal Physician Converter 
+            </summary>
+        </member>
+        <member name="T:WebAPIDocumentationDemo.ExternalPhysicianConvertor">
+            <summary>
+            External Physician Converter 
+            </summary>
+        </member>
+        <member name="M:WebAPIDocumentationDemo.ExternalPhysicianConvertor.#ctor">
+            <summary>
+            External Physician Converter 
+            </summary>
+        </member>
         <member name="M:WebAPIDocumentationDemo.Areas.HelpPage.ApiDescriptionExtensions.GetFriendlyId(System.Web.Http.Description.ApiDescription)">
             <summary>
             Generates an URI-friendly ID for the <see cref="T:System.Web.Http.Description.ApiDescription"/>. E.g. "Get-Values-id_name" instead of "GetValues/{id}?name={name}"
@@ -422,7 +442,7 @@
             </summary>
             <returns>List of physicians</returns>
         </member>
-        <member name="M:WebAPISecureSocketLayering.Controllers.PhysicianController.GetPhysician(POCOLibrary.InternalPhysicianBase)">
+        <member name="M:WebAPISecureSocketLayering.Controllers.PhysicianController.GetPhysician(System.Int32)">
             <summary>
             Get Physician by ID
             </summary>
@@ -447,6 +467,13 @@
             Add internal physician
             </summary>
             <param name="physicianRequest">PhysicianRequest value</param>
+            <returns>true/false or message object</returns>
+        </member>
+        <member name="M:WebAPISecureSocketLayering.Controllers.PhysicianController.AddExternalPhysician(POCOLibrary.PhysicianBase)">
+            <summary>
+            Add external physician
+            </summary>
+            <param name="physician">Physician value</param>
             <returns>true/false or message object</returns>
         </member>
     </members>

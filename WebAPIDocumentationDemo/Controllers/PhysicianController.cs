@@ -44,12 +44,11 @@ namespace WebAPISecureSocketLayering.Controllers
         /// <param name="physician">Physician object</param>
         /// <returns>physician object</returns>
         [WebAPIDocLib.ResponseType(typeof(PhysicianBase))]
-        [WebAPIDocLib.RequestType(typeof(InternalPhysicianBase), "physician")]
         [HttpGet]
-        public HttpResponseMessage GetPhysician([FromUri]InternalPhysicianBase physician)
+        public HttpResponseMessage GetPhysician([FromUri]int id)
         {
             // Try to get physician by ID or FirstName ....
-            return Request.CreateResponse(HttpStatusCode.OK, base.GetPhysician(physician.ID), new MediaTypeHeaderValue("application/json"));
+            return Request.CreateResponse(HttpStatusCode.OK, base.GetPhysician(id), new MediaTypeHeaderValue("application/json"));
         }
 
         /// <summary>
@@ -70,7 +69,7 @@ namespace WebAPISecureSocketLayering.Controllers
         /// <returns>Message object</returns>
         [WebAPIDocLib.ResponseType(typeof(PhysicianBase))]
         [HttpPost]
-        public new HttpResponseMessage RemovePhysician([FromBody]int id)
+        public new HttpResponseMessage RemovePhysician([FromUri]int id)
         {
             return base.RemovePhysician(id);
         }
@@ -87,6 +86,19 @@ namespace WebAPISecureSocketLayering.Controllers
         {
             InternalPhysician internalPhysician = physicianRequest.Content.ReadAsAsync<InternalPhysician>().Result;
             return base.AddPhysician(internalPhysician);
+        }
+
+        /// <summary>
+        /// Add external physician
+        /// </summary>
+        /// <param name="physician">Physician value</param>
+        /// <returns>true/false or message object</returns>
+        [WebAPIDocLib.RequestType(typeof(ExternalPhysicianBase), "physician")]
+        [WebAPIDocLib.ResponseType(typeof(bool), typeof(Message))]
+        [HttpPost]
+        public HttpResponseMessage AddExternalPhysician([FromBody]ExternalPhysicianBase physician)
+        {
+            return base.AddPhysician(physician);
         }
 
     }
