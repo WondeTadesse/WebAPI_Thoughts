@@ -446,7 +446,7 @@
             <summary>
             Get Physician by ID
             </summary>
-            <param name="physician">Physician object</param>
+            <param name="id">Physician ID value</param>
             <returns>physician object</returns>
         </member>
         <member name="M:WebAPISecureSocketLayering.Controllers.PhysicianController.ActivePhysicians">
@@ -459,7 +459,7 @@
             <summary>
             Remove physician
             </summary>
-            <param name="id">physician id value</param>
+            <param name="id">Physician id value</param>
             <returns>Message object</returns>
         </member>
         <member name="M:WebAPISecureSocketLayering.Controllers.PhysicianController.AddInternalPhysician(System.Net.Http.HttpRequestMessage)">
@@ -469,7 +469,7 @@
             <param name="physicianRequest">PhysicianRequest value</param>
             <returns>true/false or message object</returns>
         </member>
-        <member name="M:WebAPISecureSocketLayering.Controllers.PhysicianController.AddExternalPhysician(POCOLibrary.PhysicianBase)">
+        <member name="M:WebAPISecureSocketLayering.Controllers.PhysicianController.AddExternalPhysician(POCOLibrary.ExternalPhysicianBase)">
             <summary>
             Add external physician
             </summary>
