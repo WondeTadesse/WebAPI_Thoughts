@@ -2,7 +2,7 @@
 //|                  WEB API DOCUMENTATION DEMO                   |
 //|---------------------------------------------------------------|
 //|                       Developed by Wonde Tadesse              |
-//|                                  Copyright ©2014              |
+//|                             Copyright ©2014 - Present         |
 //|---------------------------------------------------------------|
 //|                  WEB API DOCUMENTATION DEMO                   |
 //|---------------------------------------------------------------|
@@ -41,7 +41,7 @@ namespace WebAPISecureSocketLayering.Controllers
         /// <summary>
         /// Get Physician by ID
         /// </summary>
-        /// <param name="id">Physician ID value</param>
+        /// <param name="physician">Physician object</param>
         /// <returns>physician object</returns>
         [WebAPIDocLib.ResponseType(typeof(PhysicianBase))]
         [HttpGet]
@@ -65,7 +65,7 @@ namespace WebAPISecureSocketLayering.Controllers
         /// <summary>
         /// Remove physician
         /// </summary>
-        /// <param name="id">Physician id value</param>
+        /// <param name="id">physician id value</param>
         /// <returns>Message object</returns>
         [WebAPIDocLib.ResponseType(typeof(PhysicianBase))]
         [HttpPost]

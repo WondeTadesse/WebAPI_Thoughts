@@ -2,7 +2,7 @@
 //|                WEB API SECURE SOCKET LAYERING                 |
 //|---------------------------------------------------------------|
 //|                       Developed by Wonde Tadesse              |
-//|                                  Copyright ©2014              |
+//|                             Copyright ©2014 - Present         |
 //|---------------------------------------------------------------|
 //|                WEB API SECURE SOCKET LAYERING                 |
 //|---------------------------------------------------------------|
@@ -24,6 +24,8 @@ namespace WebAPISecureSocketLayering.Controllers
     [HttpsValidator] // Enforce HTTPS request to the controller
     public class PhysicianController : PhysicianBaseController
     {
+        #region Public APIs 
+
         [ActionName("GetPhysicians")]
         public new  HttpResponseMessage GetPhysicians()
         {
@@ -69,5 +71,7 @@ namespace WebAPISecureSocketLayering.Controllers
             PhysicianBase physician = physicianRequest.Content.ReadAsAsync<PhysicianBase>().Result;
             return base.AddPhysician(physician);
         }
+
+        #endregion
     }
 }

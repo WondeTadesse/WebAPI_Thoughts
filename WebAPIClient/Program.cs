@@ -2,7 +2,7 @@
 //|                         WEB API CLIENT                        |
 //|---------------------------------------------------------------|
 //|                       Developed by Wonde Tadesse              |
-//|                                  Copyright ©2014              |
+//|                             Copyright ©2014 - Present         |
 //|---------------------------------------------------------------|
 //|                         WEB API CLIENT                        |
 //|---------------------------------------------------------------|
@@ -29,12 +29,51 @@ using Microsoft.Owin.Hosting;
 
 using POCOLibrary;
 using WebAPICommonLibrary;
-
+using System.Web;
+using System.Runtime.InteropServices;
 
 namespace WebAPIClient
 {
     public class Program
     {
+        #region Kernel Uni-Code Console Reader Helper 
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        static extern IntPtr GetStdHandle(int nStdHandle);
+
+        [DllImport("kernel32.dll")]
+        static extern bool ReadConsoleW(IntPtr hConsoleInput, [Out] byte[]
+           lpBuffer, uint nNumberOfCharsToRead, out uint lpNumberOfCharsRead,
+           IntPtr lpReserved);
+
+        public static IntPtr GetWin32InputHandle()
+        {
+            const int STD_INPUT_HANDLE = -10;
+            IntPtr inHandle = GetStdHandle(STD_INPUT_HANDLE);
+            return inHandle;
+        }
+
+        public static string ReadLine()
+        {
+            const int bufferSize = 1024;
+            var buffer = new byte[bufferSize];
+
+            uint charsRead = 0;
+
+            ReadConsoleW(GetWin32InputHandle(), buffer, bufferSize, out charsRead, (IntPtr)0);
+            // -2 to remove ending \n\r
+            int nc = ((int)charsRead - 2) * 2;
+            var b = new byte[nc];
+            for (var i = 0; i < nc; i++)
+                b[i] = buffer[i];
+
+            var utf8enc = Encoding.UTF8;
+            var unicodeenc = Encoding.Unicode;
+            return utf8enc.GetString(Encoding.Convert(unicodeenc, utf8enc, b));
+        }
+
+        #endregion
+        
         #region Private Static Variables 
 
         static string serverFullName;
@@ -49,7 +88,7 @@ namespace WebAPIClient
             try
             {
                 serverFullName = string.Format("{0}.{1}", Environment.MachineName, IPGlobalProperties.GetIPGlobalProperties().DomainName);
-                baseStreamingURL = new Uri(string.Format("http://{0}/WebAPIDataStreaming/filestreaming/", serverFullName)); //"http://localhost:2461/filestreaming/");//
+                baseStreamingURL = new Uri(string.Format("http://{0}/WebAPIDataStreaming/filestreaming/", serverFullName)); //
                 serverDefaultSecureURL = new Uri(string.Format("https://{0}/", serverFullName)); //"https://localhost/");//
                 secureURL = new Uri(string.Format("https://{0}/WebAPISecureSocketLayering/", serverFullName));//"https://localhost:44302");//
             }
@@ -57,7 +96,7 @@ namespace WebAPIClient
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(string.Concat("Exception : ", exception));
-                Console.ReadLine();
+                Console.ReadKey();
                 return;
             }
 
@@ -141,7 +180,7 @@ namespace WebAPIClient
         {
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Please specify file name  with extension and Press Enter :- ");
-            string fileName = Console.ReadLine();
+            string fileName = ReadLine();
             string actionURL = string.Concat("getfilemetadata?fileName=", fileName);
 
             try
@@ -207,7 +246,7 @@ namespace WebAPIClient
         {
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Please specify file name  with extension and Press Enter :- ");
-            string fileName = Console.ReadLine();
+            string fileName = ReadLine();
             string actionURL = string.Concat("searchfileindownloaddirectory?fileName=", fileName);
 
             try
@@ -256,6 +295,7 @@ namespace WebAPIClient
                 string searchfileindownloaddirectoryMessage = string.Format("\nSearchFileInDownloadDirectory operation completed @ {0}, {1} time ",
                             DateTime.Now.ToLongDateString(),
                             DateTime.Now.ToLongTimeString());
+
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine(string.Format("{0} Message : \n{1}", searchfileindownloaddirectoryMessage,
                     JsonConvert.SerializeObject(response.Result.Content.ReadAsAsync<object>().TryResult(), Formatting.Indented)));
@@ -274,7 +314,9 @@ namespace WebAPIClient
         {
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Please specify file name  with extension and Press Enter :- ");
-            string fileName = Console.ReadLine();
+            string fileName = ReadLine();
+            fileName = HttpUtility.HtmlEncode(fileName);
+
             string localDownloadPath = Path.Combine(@"c:\", fileName); // the path can be configurable
             bool overWrite = true;
             string actionURL = string.Concat("downloadasync?fileName=", fileName);

@@ -2,7 +2,7 @@
 //|                         WEB API CLIENT                        |
 //|---------------------------------------------------------------|
 //|                       Developed by Wonde Tadesse              |
-//|                                  Copyright ©2014              |
+//|                             Copyright ©2014 - Present         |
 //|---------------------------------------------------------------|
 //|                         WEB API CLIENT                        |
 //|---------------------------------------------------------------|
@@ -18,6 +18,7 @@ using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace WebAPIClient
 {
@@ -168,7 +169,7 @@ namespace WebAPIClient
             {
                 try
                 {
-                    return task.Result;
+                    return task.Result.ToString();
                 }
                 catch (Exception)
                 {
@@ -195,7 +196,7 @@ namespace WebAPIClient
                     StreamContent file = new StreamContent(new FileStream(fileFullName, FileMode.Open, FileAccess.Read));
                     file.Headers.ContentType = new MediaTypeHeaderValue("multipart/form-data");
                     file.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data");
-                    file.Headers.ContentDisposition.FileName = Path.GetFileName(fileFullName);
+                    file.Headers.ContentDisposition.FileName = HttpUtility.HtmlEncode(Path.GetFileName(fileFullName));
                     multipartFormDataContent.Add(file);
                     multipartFormDataContent.ValidateUpload();
                 }

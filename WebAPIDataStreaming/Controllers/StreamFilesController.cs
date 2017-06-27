@@ -2,7 +2,7 @@
 //|                     WEB API DATA STREAMING                    |
 //|---------------------------------------------------------------|
 //|                       Developed by Wonde Tadesse              |
-//|                                  Copyright ©2014              |
+//|                             Copyright ©2014 - Present         |
 //|---------------------------------------------------------------|
 //|                     WEB API DATA STREAMING                    |
 //|---------------------------------------------------------------|
@@ -31,7 +31,13 @@ namespace WebAPIDataStreaming.Controllers
     [RequestModelValidator]
     public class StreamFilesController : ApiController
     {
+        #region Private Variables 
+
         private string exMessage = "Opps! exception happens";
+
+        #endregion
+
+        #region Public APIs
 
         /// <summary>
         /// Get File meta data
@@ -105,13 +111,13 @@ namespace WebAPIDataStreaming.Controllers
                 }
 
                 filesMetaData.Add(new FileMetaData()
+                {
+                    FileResponseMessage = new FileResponseMessage
                     {
-                        FileResponseMessage = new FileResponseMessage
-                        {
-                            IsExists = false,
-                            Content = string.Format("{0} file is not found !", fileName)
-                        }
-                    });
+                        IsExists = false,
+                        Content = string.Format("{0} file is not found !", fileName)
+                    }
+                });
 
                 return Request.CreateResponse(HttpStatusCode.NotFound, filesMetaData, new MediaTypeHeaderValue("text/json"));
             }
@@ -138,7 +144,7 @@ namespace WebAPIDataStreaming.Controllers
             FileMetaData metaData = new FileMetaData();
             try
             {
-                string filePath = Path.Combine(this.GetDownloadPath(),fileName);
+                string filePath = Path.Combine(this.GetDownloadPath(), HttpUtility.HtmlEncode(fileName));
                 FileInfo fileInfo = new FileInfo(filePath);
 
                 if (!fileInfo.Exists)
@@ -268,7 +274,7 @@ namespace WebAPIDataStreaming.Controllers
 
                     foreach (string file in files)
                     {
-                        string filePath = Path.Combine(uploadPath, file);
+                        string filePath = Path.Combine(uploadPath, HttpUtility.HtmlDecode(file));
                         fileResponseMessage = new FileResponseMessage();
 
                         if (!overWrite && File.Exists(filePath))
@@ -339,5 +345,7 @@ namespace WebAPIDataStreaming.Controllers
                 return exMessage;
             }
         }
+
+        #endregion
     }
 }
